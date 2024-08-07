@@ -1,4 +1,4 @@
-package com.kainzengaming.sport.sports.data.model
+package com.kainzengaming.sport.sports.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

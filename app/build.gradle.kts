@@ -55,6 +55,11 @@ dependencies {
     //Dependency Injection
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+
     //Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

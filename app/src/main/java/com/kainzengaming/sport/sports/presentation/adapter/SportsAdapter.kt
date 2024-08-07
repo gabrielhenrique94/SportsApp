@@ -3,7 +3,9 @@ package com.kainzengaming.sport.sports.presentation.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kainzengaming.sport.sports.domain.model.Event
 import com.kainzengaming.sport.sports.domain.model.Sport
+import com.kainzengaming.sport.sports.presentation.adapter.mapper.toEvent
 import com.kainzengaming.sport.sports.presentation.adapter.mapper.toEventsHolder
 import com.kainzengaming.sport.sports.presentation.adapter.mapper.toSportHolderList
 import com.kainzengaming.sport.sports.presentation.adapter.model.EventHolder
@@ -16,21 +18,12 @@ import com.kainzengaming.sport.utils.BaseViewHolder
 
 const val TYPE_SPORT = 0
 const val TYPE_EVENT = 1
-class SportsAdapter(fullSportsList: List<Sport>) :
+class SportsAdapter(fullSportsList: List<Sport>,
+                    private val onEventClick: (Event) -> Unit) :
     RecyclerView.Adapter<BaseViewHolder<out Holder>>() {
 
     private val holderList = fullSportsList.toSportHolderList().toMutableList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<out Holder> =
-        when (viewType) {
-            TYPE_SPORT -> SportViewHolder.getViewHolder(
-                parent,
-                ::onSportsFavoriteClick,
-                ::onSportsExpandClick
-            )
-            TYPE_EVENT -> EventsViewHolder.getViewHolder(parent, ::onEventClick)
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(sports: List<Sport>) {
         holderList.clear()
@@ -38,10 +31,10 @@ class SportsAdapter(fullSportsList: List<Sport>) :
         notifyDataSetChanged()
     }
     private fun onEventClick(eventHolder: EventHolder) {
-
+            onEventClick(eventHolder.toEvent())
     }
 
-    private fun onSportsFavoriteClick(sportHolder: SportHolder) {
+    private fun onSportsFilterClick(sportHolder: SportHolder) {
 
     }
 
@@ -84,6 +77,17 @@ class SportsAdapter(fullSportsList: List<Sport>) :
             is EventsViewHolder -> holder.bind(holderList[position] as EventsHolder)
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<out Holder> =
+        when (viewType) {
+            TYPE_SPORT -> SportViewHolder.getViewHolder(
+                parent,
+                ::onSportsFilterClick,
+                ::onSportsExpandClick
+            )
+            TYPE_EVENT -> EventsViewHolder.getViewHolder(parent, ::onEventClick)
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
 
     override fun getItemViewType(position: Int): Int =
         when (holderList[position]) {

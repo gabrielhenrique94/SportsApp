@@ -1,10 +1,10 @@
-package com.kainzengaming.sport.sports.di
+package com.kainzengaming.sport.sports.data.remote.di
 
 import com.google.gson.GsonBuilder
 import com.kainzengaming.sport.gson.GsonStringTypeAdapter
-import com.kainzengaming.sport.sports.data.remote.RemoteDataSource
-import com.kainzengaming.sport.sports.data.remote.RemoteDataSourceImpl
-import com.kainzengaming.sport.sports.data.service.SportsService
+import com.kainzengaming.sport.sports.data.remote.datasource.RemoteDataSource
+import com.kainzengaming.sport.sports.data.remote.datasource.RemoteDataSourceImpl
+import com.kainzengaming.sport.sports.data.remote.service.SportsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -31,10 +31,18 @@ fun Sport.toSportHolder() = SportHolder(
 fun Event.toEventHolder() = EventHolder(
     id = id,
     name = name,
-    startTime = startTime
+    startTime = startTime,
+    isFavorite = isFavorite
 )
 
 fun SportHolder.toEventsHolder() = EventsHolder(
     sportId = id,
     events = events
+)
+
+fun EventHolder.toEvent() = Event(
+    id = id,
+    name = name,
+    startTime = startTime,
+    isFavorite = isFavorite
 )
