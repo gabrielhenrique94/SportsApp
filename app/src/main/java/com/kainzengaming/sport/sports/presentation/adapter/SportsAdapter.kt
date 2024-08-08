@@ -1,98 +1,44 @@
 package com.kainzengaming.sport.sports.presentation.adapter
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.kainzengaming.sport.sports.domain.model.Event
-import com.kainzengaming.sport.sports.domain.model.Sport
-import com.kainzengaming.sport.sports.presentation.adapter.mapper.toEvent
-import com.kainzengaming.sport.sports.presentation.adapter.mapper.toEventsHolder
-import com.kainzengaming.sport.sports.presentation.adapter.mapper.toSportHolderList
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventHolder
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventsHolder
-import com.kainzengaming.sport.sports.presentation.adapter.model.Holder
-import com.kainzengaming.sport.sports.presentation.adapter.model.SportHolder
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.kainzengaming.sport.sports.presentation.adapter.diffutil.EventSportsDiffUtil
 import com.kainzengaming.sport.sports.presentation.adapter.viewholder.EventsViewHolder
 import com.kainzengaming.sport.sports.presentation.adapter.viewholder.SportViewHolder
-import com.kainzengaming.sport.utils.BaseViewHolder
+import com.kainzengaming.sport.sports.presentation.model.EventDataUi
+import com.kainzengaming.sport.sports.presentation.model.EventsDataUi
+import com.kainzengaming.sport.sports.presentation.model.SportDataUi
 
 const val TYPE_SPORT = 0
 const val TYPE_EVENT = 1
-class SportsAdapter(fullSportsList: List<Sport>,
-                    private val onEventClick: (Event) -> Unit) :
-    RecyclerView.Adapter<BaseViewHolder<out Holder>>() {
+class SportsAdapter(
+    private val onEventClick: (EventDataUi) -> Unit,
+    private val onSportsFilterClick: (SportDataUi) -> Unit ,
+    private val onSportsExpandClick: (SportDataUi) -> Unit
+) : ListAdapter<Any, ViewHolder>(EventSportsDiffUtil()) {
 
-    private val holderList = fullSportsList.toSportHolderList().toMutableList()
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateList(sports: List<Sport>) {
-        holderList.clear()
-        holderList.addAll(sports.toSportHolderList())
-        notifyDataSetChanged()
-    }
-    private fun onEventClick(eventHolder: EventHolder) {
-            onEventClick(eventHolder.toEvent())
-    }
-
-    private fun onSportsFilterClick(sportHolder: SportHolder) {
-
-    }
-
-    private fun onSportsExpandClick(sportHolder: SportHolder) {
-        val position = holderList.indexOf(sportHolder)
-        if (sportHolder.isOpened) {
-            collapse(sportHolder, position)
-        } else {
-            expand(sportHolder, position)
-        }
-    }
-
-    private fun expand(
-        sportHolder: SportHolder,
-        position: Int
-    ) {
-        sportHolder.isOpened = true
-        holderList.add(position + 1, sportHolder.toEventsHolder())
-        notifyItemChanged(position)
-        notifyItemInserted(position + 1)
-    }
-
-    private fun collapse(
-        sportHolder: SportHolder,
-        position: Int
-    ) {
-        holderList.removeAll { holder ->
-            holder is EventsHolder && holder.sportId == sportHolder.id
-        }
-        sportHolder.isOpened = false
-        notifyItemChanged(position)
-        notifyItemRemoved(position + 1)
-    }
-
-    override fun getItemCount(): Int = holderList.size
-
-    override fun onBindViewHolder(holder: BaseViewHolder<out Holder>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is SportViewHolder -> holder.bind(holderList[position] as SportHolder)
-            is EventsViewHolder -> holder.bind(holderList[position] as EventsHolder)
+            is SportViewHolder -> holder.bind(getItem(position) as SportDataUi)
+            is EventsViewHolder -> holder.bind(getItem(position) as EventsDataUi)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<out Holder> =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         when (viewType) {
             TYPE_SPORT -> SportViewHolder.getViewHolder(
                 parent,
-                ::onSportsFilterClick,
-                ::onSportsExpandClick
+                onSportsFilterClick,
+                onSportsExpandClick
             )
-            TYPE_EVENT -> EventsViewHolder.getViewHolder(parent, ::onEventClick)
+            TYPE_EVENT -> EventsViewHolder.getViewHolder(parent, onEventClick)
             else -> throw IllegalArgumentException("Invalid view type")
         }
-
     override fun getItemViewType(position: Int): Int =
-        when (holderList[position]) {
-            is SportHolder -> TYPE_SPORT
-            is EventsHolder -> TYPE_EVENT
+        when (getItem(position)) {
+            is SportDataUi -> TYPE_SPORT
+            is EventsDataUi -> TYPE_EVENT
             else -> throw IllegalArgumentException("Invalid view type")
         }
 }

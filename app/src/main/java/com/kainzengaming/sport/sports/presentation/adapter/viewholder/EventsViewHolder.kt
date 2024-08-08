@@ -2,17 +2,16 @@ package com.kainzengaming.sport.sports.presentation.adapter.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.kainzengaming.sport.databinding.ViewholderSportsEventBinding
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kainzengaming.sport.databinding.ViewholderSportsEventsBinding
 import com.kainzengaming.sport.sports.presentation.adapter.EventsAdapter
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventHolder
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventsHolder
-import com.kainzengaming.sport.utils.BaseViewHolder
+import com.kainzengaming.sport.sports.presentation.model.EventDataUi
+import com.kainzengaming.sport.sports.presentation.model.EventsDataUi
 
 class EventsViewHolder private constructor(
     binding: ViewholderSportsEventsBinding,
-    onEventClickListener: (EventHolder) -> Unit
-) : BaseViewHolder<EventsHolder>(binding.root) {
+    onEventClickListener: (EventDataUi) -> Unit
+) : ViewHolder(binding.root) {
     private val eventsAdapter: EventsAdapter = EventsAdapter(onEventClickListener)
 
     init {
@@ -22,14 +21,15 @@ class EventsViewHolder private constructor(
         }
     }
 
-    override fun bind(data: EventsHolder) {
-        eventsAdapter.submitList(data.events)
+    fun bind(data: EventsDataUi) {
+        val newList = ArrayList<EventDataUi>(data.events)
+        eventsAdapter.submitList(newList)
     }
 
     companion object {
         fun getViewHolder(
             parent: ViewGroup,
-            onEventClickListener: (EventHolder) -> Unit
+            onEventClickListener: (EventDataUi) -> Unit
         ) =
             EventsViewHolder(
                 ViewholderSportsEventsBinding.inflate(

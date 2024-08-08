@@ -1,29 +1,24 @@
 package com.kainzengaming.sport.sports.presentation.adapter.viewholder
 
-import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kainzengaming.sport.R
-import com.kainzengaming.sport.databinding.ViewholderSportsEventBinding
 import com.kainzengaming.sport.databinding.ViewholderSportsTitleBinding
-import com.kainzengaming.sport.sports.domain.model.Event
-import com.kainzengaming.sport.sports.domain.model.Sport
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventHolder
-import com.kainzengaming.sport.sports.presentation.adapter.model.SportHolder
-import com.kainzengaming.sport.utils.BaseViewHolder
+import com.kainzengaming.sport.sports.presentation.model.SportDataUi
+import kotlin.reflect.KProperty0
 
 class SportViewHolder private constructor(
     private val binding: ViewholderSportsTitleBinding,
-    private val onSportsFavoriteClickListener: (SportHolder) -> Unit,
-    private val onExpandClickListener: (SportHolder) -> Unit
-) :
-    BaseViewHolder<SportHolder>(binding.root) {
+    private val onSportsFavoriteClickListener: (SportDataUi) -> Unit,
+    private val onExpandClickListener: (SportDataUi) -> Unit
+) : ViewHolder(binding.root) {
 
-    override fun bind(data: SportHolder) {
+    fun bind(data: SportDataUi) {
         with(binding) {
             collapseIcon.setOnClickListener { onExpandClickListener(data) }
             sportsName.text = data.name
-            favoriteSwitch.isChecked = data.isFavorite
+            favoriteSwitch.isChecked = data.isFiltered
             favoriteSwitch.setOnClickListener { onSportsFavoriteClickListener(data) }
             collapseIcon.setImageResource(
                 if (data.isOpened) {
@@ -38,8 +33,8 @@ class SportViewHolder private constructor(
     companion object {
         fun getViewHolder(
             parent: ViewGroup,
-            onSportsFavoriteClickListener: (SportHolder) -> Unit,
-            onExpandClickListener: (SportHolder) -> Unit
+            onSportsFavoriteClickListener: (SportDataUi) -> Unit,
+            onExpandClickListener: (SportDataUi) -> Unit
         ) =
             SportViewHolder(
                 ViewholderSportsTitleBinding.inflate(

@@ -2,12 +2,13 @@ package com.kainzengaming.sport.sports.presentation.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.kainzengaming.sport.sports.presentation.adapter.model.EventHolder
+import com.kainzengaming.sport.sports.presentation.adapter.diffutil.EventDiffUtil
+import com.kainzengaming.sport.sports.presentation.model.EventDataUi
 import com.kainzengaming.sport.sports.presentation.adapter.viewholder.EventViewHolder
 
 class EventsAdapter(
-    private val onEventClickListener: (EventHolder) -> Unit
-) : ListAdapter<EventHolder, EventViewHolder>(EventDiffUtil()) {
+    private val onEventClickListener: (EventDataUi) -> Unit
+) : ListAdapter<EventDataUi, EventViewHolder>(EventDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return EventViewHolder.getViewHolder(parent, onEventClickListener)

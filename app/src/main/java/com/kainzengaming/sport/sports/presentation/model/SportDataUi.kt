@@ -1,9 +1,9 @@
-package com.kainzengaming.sport.sports.presentation.adapter.model
+package com.kainzengaming.sport.sports.presentation.model
 
-data class SportHolder(
+data class SportDataUi(
     val id: String,
     val name: String,
-    val events: List<EventHolder>,
-    var isOpened: Boolean = false,
-    var isFiltered: Boolean = false
-) : Holder
+    val events: MutableList<EventDataUi>,
+    val isOpened: Boolean = false,
+    val isFiltered: Boolean = false
+)

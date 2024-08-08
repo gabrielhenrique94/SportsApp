@@ -1,10 +1,9 @@
-package com.kainzengaming.sport.sports.presentation.adapter.mapper
+package com.kainzengaming.sport.sports.presentation.mapper
 
 import com.kainzengaming.sport.sports.domain.model.Event
 import com.kainzengaming.sport.sports.domain.model.Sport
 import com.kainzengaming.sport.sports.presentation.model.EventDataUi
-import com.kainzengaming.sport.sports.presentation.model.EventsHolder
-import com.kainzengaming.sport.sports.presentation.model.Holder
+import com.kainzengaming.sport.sports.presentation.model.EventsDataUi
 import com.kainzengaming.sport.sports.presentation.model.SportDataUi
 
 fun List<Sport>.toDataUi(): List<Any> {
@@ -16,15 +15,15 @@ fun List<Sport>.toDataUi(): List<Any> {
     return holderList
 }
 
-fun Sport.toEventsDataUi() = EventsHolder(
+fun Sport.toEventsDataUi() = EventsDataUi(
     sportId = id,
-    events = events.map { it.toEventDataUi(id) }
+    events = events.map { it.toEventDataUi(id) }.toMutableList()
 )
 
 fun Sport.toSportDataUi() = SportDataUi(
     id = id,
     name = name,
-    events = events.map { it.toEventDataUi(id) },
+    events = events.map { it.toEventDataUi(id) }.toMutableList(),
     isOpened = true
 )
 
@@ -37,12 +36,15 @@ fun Event.toEventDataUi(sportId: String) = EventDataUi(
 )
 
 fun SportDataUi.toEventsDataUi() =
-    EventsHolder(
+    EventsDataUi(
         sportId = id,
-        events = if (this.isFiltered) events.filter { it.isFavorite } else events
+        events = if (this.isFiltered)
+            events.filter { it.isFavorite }
+        else
+            ArrayList(events)
     )
 
-fun EventDataUi.toEvent() = Event(
+fun EventDataUi.toEventDomain() = Event(
     id = id,
     name = name,
     startTime = startTime,
