@@ -4,5 +4,6 @@ data class EventHolder(
     val id: String,
     val name: String,
     val startTime: Long,
-    val isFavorite: Boolean = false
-): Holder
+    val sportId: String,
+    var isFavorite: Boolean = false
+) : Holder

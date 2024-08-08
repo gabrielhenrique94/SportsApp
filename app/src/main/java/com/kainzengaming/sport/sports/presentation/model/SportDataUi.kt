@@ -4,8 +4,6 @@ data class SportHolder(
     val id: String,
     val name: String,
     val events: List<EventHolder>,
-    var isOpened: Boolean = false
-) : Holder {
-    val isFavorite: Boolean
-        get() = events.all { event  ->  event.isFavorite }
-}
+    var isOpened: Boolean = false,
+    var isFiltered: Boolean = false
+) : Holder
