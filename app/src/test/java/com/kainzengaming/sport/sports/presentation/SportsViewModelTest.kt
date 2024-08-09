@@ -22,7 +22,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-
 class SportsViewModelTest {
 
     @get:Rule
@@ -40,9 +39,7 @@ class SportsViewModelTest {
     @MockK(relaxed = true)
     lateinit var favoriteEventUseCase: FavoriteEventUseCase
 
-
     private lateinit var viewModel: SportsViewModel
-
 
     @Before
     fun setUp() {
@@ -186,8 +183,6 @@ class SportsViewModelTest {
         assert(eventsList is EventsDataUi)
         val events = (eventsList as EventsDataUi).events
         assertEquals(21, events.size)
-
-
     }
 
     private fun List<Any>.findAllEvents(eventId: String): MutableList<EventDataUi> {

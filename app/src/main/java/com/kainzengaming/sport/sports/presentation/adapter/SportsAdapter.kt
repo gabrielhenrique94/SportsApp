@@ -35,6 +35,7 @@ class SportsAdapter(
             TYPE_EVENT -> EventsViewHolder.getViewHolder(parent, onEventClick)
             else -> throw IllegalArgumentException("Invalid view type")
         }
+
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
             is SportDataUi -> TYPE_SPORT
