@@ -70,7 +70,8 @@ class SportsViewModel @Inject constructor(
     private fun getSports() {
         viewModelScope.launch {
             getSportsUseCases()
-                .catch {
+                .catch { e ->
+                    e.printStackTrace()
                     _errorLiveData.value = R.string.event_error
                 }
                 .collect { sports ->
@@ -92,14 +93,12 @@ class SportsViewModel @Inject constructor(
 
     private fun updateEventHolderState(event: EventDataUi) {
         val newEvent = event.copy(isFavorite = event.isFavorite.not())
-
         //Update on Sports
         val sportHolder =
             holderList.find { it is SportDataUi && it.id == event.sportId } as SportDataUi
         val eventHolder = sportHolder.events.find { it.id == event.id }
         val eventHolderPosition = sportHolder.events.indexOf(eventHolder)
         sportHolder.events[eventHolderPosition] = newEvent
-
         //Update on Events
         if (sportHolder.isOpened) {
             val position = holderList.indexOf(sportHolder)

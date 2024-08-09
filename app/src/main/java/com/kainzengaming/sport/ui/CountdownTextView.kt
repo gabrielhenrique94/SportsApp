@@ -17,7 +17,7 @@ class CountdownTextView @JvmOverloads constructor(
     /**
      * Start the timer count down to the given time.
      */
-    public fun setTimer(time: Long) {
+    fun setTimer(time: Long) {
         countdownTimer(
             calculateTimeUntilStart(time)
         )

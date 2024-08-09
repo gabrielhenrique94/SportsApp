@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class FavoriteEventUseCase @Inject constructor(private val repository: SportsRepository) {
     suspend operator fun invoke(event: Event) {
-        if (event.isFavorite) {
+        if (!event.isFavorite) {
             repository.favoriteEvent(event)
         } else {
             repository.removeFavoriteEvent(event)

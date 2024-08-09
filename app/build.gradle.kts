@@ -48,13 +48,16 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit.logging.interceptor)
+
     //Dependency Injection
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
+
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -62,6 +65,10 @@ dependencies {
 
     //Tests
     testImplementation(libs.junit)
+    testImplementation(libs.mockk.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+
 }
